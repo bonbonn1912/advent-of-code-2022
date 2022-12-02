@@ -1,79 +1,28 @@
 import { readTXTContent } from "../readFile.js";
-
-const Scores = {
-  X: 1,
-  Y: 2,
-  Z: 3,
+const lineScore = {
+  "A X": 4, // Rock Paper Scissors
+  "A Y": 8,
+  "A Z": 3,
+  "B X": 1,
+  "B Y": 5,
+  "B Z": 9,
+  "C X": 7,
+  "C Y": 2,
+  "C Z": 6,
+};
+const conditions = {
+  "A X": "A Z", // Rock Paper Scissors
+  "A Y": "A X",
+  "A Z": "A Y",
+  "B X": "B X",
+  "B Y": "B Y",
+  "B Z": "B Z",
+  "C X": "C Y",
+  "C Y": "C Z",
+  "C Z": "C X",
 };
 
-function calcScore(line) {
-  let firstChar = line.split(" ")[0];
-  let secondChar = line.split(" ")[1];
-  let score = 0;
-  switch (firstChar) {
-    case "A":
-      secondChar == "X"
-        ? (score = score + 3 + Scores[secondChar])
-        : secondChar == "Y"
-        ? (score = score + 6 + Scores[secondChar])
-        : (score = score + 0 + Scores[secondChar]);
-      break;
-    case "B":
-      secondChar == "Y"
-        ? (score = score + 3 + Scores[secondChar])
-        : secondChar == "Z"
-        ? (score = score + 6 + Scores[secondChar])
-        : (score = score + 0 + Scores[secondChar]);
-      break;
-    case "C":
-      secondChar == "Z"
-        ? (score = score + 3 + Scores[secondChar])
-        : secondChar == "X"
-        ? (score = score + 6 + Scores[secondChar])
-        : (score = score + 0 + Scores[secondChar]);
-  }
-  return score;
-}
+console.log(readTXTContent("input.txt").replace(/[\r]/g, "").split("\n").map(line => lineScore[line]).reduce((a,b) => a+b))
 
-let scoreDay01 = 0;
-readTXTContent("input.txt")
-  .replace(/[\r]/g, "")
-  .split("\n")
-  .map((line) => {
-    scoreDay01 = scoreDay01 + calcScore(line);
-  });
-console.log(scoreDay01);
+console.log(readTXTContent("input.txt").replace(/[\r]/g, "").split("\n").map(line => conditions[line]).map((newline) => lineScore[newline]).reduce((a,b) => a+b))
 
-let scoreDay02 = 0;
-readTXTContent("input.txt")
-  .replace(/[\r]/g, "")
-  .split("\n")
-  .map((line) => {
-    let firstChar = line.split(" ")[0];
-    let secondChar = line.split(" ")[1];
-    let newLine = "";
-    switch (secondChar) {
-      case "Y":
-        firstChar == "A"
-          ? (newLine = line.replace(secondChar, "X"))
-          : firstChar == "B"
-          ? (newLine = line.replace(secondChar, "Y"))
-          : (newLine = line.replace(secondChar, "Z"));
-        break;
-      case "X":
-        firstChar == "A"
-          ? (newLine = line.replace(secondChar, "Z"))
-          : firstChar == "B"
-          ? (newLine = line.replace(secondChar, "X"))
-          : (newLine = line.replace(secondChar, "Y"));
-        break;
-      case "Z":
-        firstChar == "A"
-          ? (newLine = line.replace(secondChar, "Y"))
-          : firstChar == "B"
-          ? (newLine = line.replace(secondChar, "Z"))
-          : (newLine = line.replace(secondChar, "X"));
-    }
-    scoreDay02 = scoreDay02 + calcScore(newLine);
-  });
-console.log(scoreDay02);
